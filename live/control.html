@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bảng điều khiển · Chánh Điện Tịnh Tâm</title>
+<title>Bảng điều khiển · Vườn Tịnh Lạc</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
 <style>
 /* Layout: three columns of cards (connection · interaction · sound/scene) over a status bar; collapses to one column on narrow windows. */
@@ -45,7 +45,7 @@ button.red{background:var(--red);border-color:#b84a33}
 </head>
 <body>
 <header>
-  <h1>Bảng điều khiển · Chánh Điện Tịnh Tâm</h1>
+  <h1>Bảng điều khiển · Vườn Tịnh Lạc</h1>
   <div class="status">
     <span class="chip" id="srv">Server: …</span>
     <span class="chip" id="tt">TikTok: chưa kết nối</span>
@@ -70,7 +70,7 @@ button.red{background:var(--red);border-color:#b84a33}
     <label for="simName">Tên người xem</label>
     <input id="simName" value="Minh An">
     <label for="simText">Bình luận / lời nguyện</label>
-    <input id="simText" value="Nam mô A Di Đà Phật, cầu gia đình bình an">
+    <input id="simText" value="Chúc bạn bình an, cầu gia đình bình an">
     <div class="row"><button id="btnChat">Gửi bình luận</button></div>
     <div class="row">
       <button data-gift="Hoa hồng" data-dia="1">Hoa hồng · 1</button>
@@ -98,21 +98,21 @@ button.red{background:var(--red);border-color:#b84a33}
       <label>Tốc độ (%)<input id="rate" type="number" step="1" value="-20"></label>
     </div>
     <label for="sayText">Đọc thử / phát thông báo</label>
-    <textarea id="sayText">Nam mô Bổn Sư Thích Ca Mâu Ni Phật. Nguyện cầu cho tất cả chư vị Phật tử thân tâm thường an lạc, vạn sự cát tường.</textarea>
-    <div class="row"><button class="primary" id="btnSay">Phát lên live</button><button id="btnChant">Đọc kinh định kỳ ngay</button></div>
+    <textarea id="sayText">Chào bạn đến với Vườn Tịnh Lạc. Hãy thả lỏng đôi vai, hít thở nhẹ nhàng và dành một chút thời gian cho mình.</textarea>
+    <div class="row"><button class="primary" id="btnSay">Phát lên live</button><button id="btnChant">Đọc lời nhắc an nhiên</button></div>
     <div class="row tight">
-      <label class="check"><input type="checkbox" id="music" checked> Nhạc nền</label>
-      <label class="check"><input type="checkbox" id="mo" checked> Tiếng mõ</label>
-      <label class="check"><input type="checkbox" id="autoChant" checked> Đọc kinh tự động</label>
+      <label class="check"><input type="checkbox" id="music" checked> Nhạc thiền · An Nhiên</label>
+      <label class="check"><input type="checkbox" id="mo"> Tiếng gõ (tùy chọn)</label>
+      <label class="check"><input type="checkbox" id="autoChant"> Lời nhắc thư giãn tự động</label>
     </div>
     <div class="row">
       <label>Nhịp mõ (BPM)<input id="moBpm" type="number" min="20" max="120" value="52"></label>
-      <label>Đọc kinh mỗi (phút)<input id="chantEveryMin" type="number" min="1" max="60" value="3"></label>
+      <label>Nhắc thư giãn mỗi (phút)<input id="chantEveryMin" type="number" min="1" max="60" value="3"></label>
     </div>
     <div class="row"><button id="btnBell">🔔 Thỉnh chuông</button><button id="btnMo">Gõ mõ</button></div>
     <h2>Cảnh</h2>
-    <label>Tên thiền đường<input id="title" value="Chánh Điện Tịnh Tâm"></label>
-    <label>Dòng phụ<input id="subtitle" value="Nam Mô A Di Đà Phật"></label>
+    <label>Tên thiền đường<input id="title" value="Vườn Tịnh Lạc"></label>
+    <label>Dòng phụ<input id="subtitle" value="Ghé ngồi · Thở nhẹ · An nhiên"></label>
     <div class="row">
       <label>Số chỗ ngồi<select id="seatMode"><option value="auto">Tự mở rộng 24 → 100</option><option value="24">24</option><option value="36">36</option><option value="64">64</option><option value="100">100</option></select></label>
     </div>
@@ -124,7 +124,7 @@ button.red{background:var(--red);border-color:#b84a33}
   <h2>Nhật ký</h2>
   <div id="log" aria-live="polite"></div>
 </section>
-<footer class="hint" style="margin-top:14px;text-align:center">Chánh Điện Online · mã nguồn mở MIT · thực hiện bởi Kent Juno</footer>
+<footer class="hint" style="margin-top:14px;text-align:center">Vườn Online · mã nguồn mở MIT · thực hiện bởi Kent Juno</footer>
 
 <script>
 const $ = id => document.getElementById(id);

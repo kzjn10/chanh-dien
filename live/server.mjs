@@ -24,13 +24,13 @@ const validToken = value => { const a=Buffer.from(value||''), b=Buffer.from(CONT
 
 /* ------------------------------------------------------------------ state */
 const settings = {
-  title: 'Chánh Điện Tịnh Tâm',
-  subtitle: 'Nam Mô A Di Đà Phật',
+  title: 'Vườn Tịnh Lạc',
+  subtitle: 'Ghé ngồi · Thở nhẹ · An nhiên',
   voice: 'vi-VN-NamMinhNeural',      // or vi-VN-HoaiMyNeural
   pitch: -18,                        // Hz
   rate: -20,                         // %
-  music: true, mo: true, moBpm: 52,
-  autoChant: true, chantEveryMin: 3,
+  music: true, mo: false, moBpm: 52,
+  autoChant: false, chantEveryMin: 3,
   seatMode: 'auto',                  // auto | 24 | 36 | 64 | 100
   joinOnEnter: false,                // also seat viewers who only enter the room
   gifts: { readAll: true, minDiamonds: 1 },
@@ -45,7 +45,7 @@ const CAPS = [24, 36, 64, 100];
 function capacity(){ if (settings.seatMode !== 'auto') return +settings.seatMode; const n = viewers.size; return CAPS.find(c => n <= c) || 100; }
 
 /* skins: sprites that exist in /assets. Walking strips exist for man / woman / granny. */
-// A comment changes the outfit only when it IS the keyword (≤ 3 words), so "Nam mô A Di Đà Phật" never reads as "nam".
+// A comment changes the outfit only when it IS the keyword (≤ 3 words), so "Chúc bạn bình an" never reads as "nam".
 const SKIN_WORDS = [
   ['master', ['cao tăng','cao tang']], ['monk', ['sư','su','sư thầy','su thay','thầy','thay']], ['nun', ['ni','ni cô','ni co','sư cô','su co']],
   ['child', ['tiểu','tieu','chú tiểu','chu tieu','bé','be']], ['granny', ['bà','ba','áo nâu','ao nau','cụ','cu']],
@@ -96,14 +96,13 @@ function onGift(id, name, giftName, count, diamonds, avatar){
   v.coins += coins;
   const prayer = pickPrayer();
   const tier = coins >= 99 ? 3 : coins >= 10 ? 2 : 1;
-  const line = `Nam mô A Di Đà Phật. Phật tử hữu duyên thành tâm dâng lễ${count > 1 ? ', ' + count + ' lần' : ''}. ${prayer}.`;
+  const line = `Cảm ơn bạn đã gửi một món quà tới khu vườn${count > 1 ? ', ' + count + ' lần' : ''}. ${prayer}.`;
   broadcast({ t:'gift', id, name: v.name, giftName, count, coins, total: v.coins, tier, prayer });
   if (settings.gifts.readAll || coins >= settings.gifts.minDiamonds) say(line, { tag:'gift', id });
 }
 
 function pickPrayer(){
-  const P = ['Nguyện cầu gia đạo bình an, vạn sự cát tường', 'Nguyện cầu cha mẹ mạnh khỏe, sống lâu', 'Nguyện hồi hướng công đức cho khắp pháp giới chúng sinh',
-             'Nguyện cầu thân tâm an lạc, phiền não tiêu trừ', 'Nguyện cầu công việc hanh thông, gia đình hạnh phúc'];
+  const P = ['Chúc bạn có một ngày thật nhẹ nhàng', 'Mong bạn và người thân luôn bình an', 'Chúc những điều tốt đẹp tìm đến bạn', 'Mong bạn tìm được một khoảng lặng cho riêng mình', 'Cảm ơn bạn đã mang sự ấm áp đến khu vườn'];
   return P[Math.floor(Math.random() * P.length)];
 }
 const spoken = s => String(s).replace(/[_@.]+/g, ' ').replace(/[^\p{L}\p{N}\s]/gu, '').trim() || 'ẩn danh';
@@ -131,10 +130,10 @@ async function pumpTTS(){
 }
 
 const CHANTS = [
-  'Nam mô Bổn Sư Thích Ca Mâu Ni Phật. Nguyện đem công đức này, hướng về khắp tất cả, đệ tử và chúng sinh, đều trọn thành Phật đạo.',
-  'Nam mô A Di Đà Phật. Nguyện sanh Tây Phương Tịnh Độ trung, cửu phẩm liên hoa vi phụ mẫu.',
-  'Nam mô Đại Bi Quán Thế Âm Bồ Tát. Nguyện cho tất cả chúng sinh thân tâm an lạc, tai qua nạn khỏi.',
-  'Quán Tự Tại Bồ Tát hành thâm Bát Nhã Ba La Mật Đa thời, chiếu kiến ngũ uẩn giai không, độ nhất thiết khổ ách.',
+  'Hãy thả lỏng đôi vai, hít vào nhẹ nhàng và chậm rãi thở ra. Bạn không cần vội đi đâu.',
+  'Lắng nghe một chút, để những bộn bề lắng xuống. Khoảnh khắc này là của bạn.',
+  'Như mây trôi qua tán lá, hãy để những suy nghĩ đến rồi nhẹ nhàng đi.',
+  'Cảm ơn bạn đã ghé ngồi. Mong bạn tìm thấy một chút bình yên giữa ngày dài.',
 ];
 let chantIdx = 0, chantTimer = null;
 function chant(){ const text = CHANTS[chantIdx++ % CHANTS.length]; broadcast({ t:'chant', text }); say(text, { tag:'chant' }); }
@@ -185,7 +184,7 @@ function fillDemo(n){
   const have = [...viewers.values()].filter(v => v.demo).length;
   for (let i = have; i < n && viewers.size < 100; i++){
     const name = DEMO_NAMES[i % DEMO_NAMES.length] + (i >= DEMO_NAMES.length ? ' ' + (Math.floor(i / DEMO_NAMES.length) + 1) : '');
-    seat('demo_' + i, name, { demo: true, skin: ['man','woman','woman','man','granny','monk','nun','child'][i % 8] });
+    seat('demo_' + i, name, { demo: true, skin: ['man','woman','woman','man','granny','man','woman','granny'][i % 8] });
   }
 }
 function clearSeats(){ viewers.clear(); broadcast(snapshot()); addLog('Đã làm trống bồ đoàn'); }
@@ -195,7 +194,7 @@ function onControl(m){
   switch (m.cmd){
     case 'connect': connectTikTok(m.uniqueId); break;
     case 'disconnect': disconnectTikTok(); addLog('Đã ngắt kết nối TikTok'); break;
-    case 'chat': { const n = String(m.name || 'Khách').slice(0, 18); onChat('sim_' + n, n, String(m.text || 'Nam mô A Di Đà Phật').slice(0, 120)); break; }
+    case 'chat': { const n = String(m.name || 'Khách').slice(0, 18); onChat('sim_' + n, n, String(m.text || 'Chúc bạn bình an').slice(0, 120)); break; }
     case 'gift': { const n = String(m.name || 'Khách').slice(0, 18); onGift('sim_' + n, n, String(m.gift || 'Hoa hồng').slice(0, 30), clamp(m.count, 1, 99), clamp(m.diamonds, 1, 50000)); break; }
     case 'fill': fillDemo(clamp(m.n, 1, 100)); addLog(`Đổ người mẫu: ${viewers.size} người`); break;
     case 'clear': clearSeats(); break;
@@ -223,8 +222,8 @@ function applySettings(o){ for (const [k, fn] of Object.entries(SETTING_RULES)) 
 
 /* ----------------------------------------------------------------- bots */
 let botTimer = null;
-const BOT_LINES = ['Nam mô A Di Đà Phật', 'Nam mô Bổn Sư Thích Ca Mâu Ni Phật', 'Cầu cho gia đình bình an', 'Con xin thành tâm sám hối', 'nữ', 'nam', 'bà',
-  'Nguyện cầu cha mẹ mạnh khỏe', 'Mô Phật, an lạc quá', 'Chúc mọi người một ngày bình an', 'sư', 'Cầu công việc hanh thông'];
+const BOT_LINES = ['Chúc bạn bình an', 'Hôm nay mình cùng chậm lại', 'Cầu cho gia đình bình an', 'Một khoảng lặng thật dễ chịu', 'nữ', 'nam', 'bà',
+  'Nguyện cầu cha mẹ mạnh khỏe', 'Khu vườn yên bình quá', 'Chúc mọi người một ngày bình an', 'sư', 'Cầu công việc hanh thông'];
 function setBots(on, n, pace){
   clearInterval(botTimer); botTimer = null;
   if (on){
@@ -265,7 +264,7 @@ const SEP = path.sep;
 function resolveStatic(urlPath){
   let p = urlPath === '/' ? '/live/control.html' : urlPath;
   if (p.split('/').some(seg => seg.startsWith('.'))) return null;
-  const allowed = p === '/live/control.html' || p === '/live/overlay.html' ||
+  const allowed = p === '/assets/garden-layout.js' || p === '/live/control.html' || p === '/live/overlay.html' ||
     /^\/live\/tts\/tts_\d+_\d+\.mp3$/.test(p) ||
     /^\/assets\/[a-zA-Z0-9_/-]+\.(png|jpg|jpeg|webp|mp3|ogg|wav|ico)$/.test(p);
   if (!allowed) return null;
